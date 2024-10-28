@@ -1,0 +1,91 @@
+---
+import SubmitForm from '../components/SubmitForm.astro';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Samsung One UI Form</title>
+	</head>
+	<body>
+		<main>
+			<div class="header">
+				<h1>Registration Form</h1>
+				<a href="/submissions" class="view-submissions">View Submissions</a>
+			</div>
+			<SubmitForm />
+		</main>
+	</body>
+</html>
+
+<style>
+	/* Samsung One UI inspired styles */
+	:root {
+		--samsung-background: #F5F6F8;
+		--samsung-text: #1A1A1A;
+		--samsung-blue: #1259B0;
+		--samsung-light-blue: #3D7DD9;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: var(--samsung-background);
+		min-height: 100vh;
+		font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+	}
+
+	main {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+
+	h1 {
+		color: var(--samsung-text);
+		font-size: 2rem;
+		font-weight: 600;
+		margin: 0;
+		letter-spacing: -0.02em;
+	}
+
+	.view-submissions {
+		padding: 0.75rem 1.5rem;
+		background-color: var(--samsung-blue);
+		color: white;
+		text-decoration: none;
+		border-radius: 16px;
+		font-weight: 500;
+		transition: background-color 0.2s ease;
+	}
+
+	.view-submissions:hover {
+		background-color: var(--samsung-light-blue);
+	}
+
+	@media (max-width: 640px) {
+		.header {
+			flex-direction: column;
+			gap: 1rem;
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 1.75rem;
+		}
+
+		main {
+			padding: 1rem;
+		}
+	}
+</style>

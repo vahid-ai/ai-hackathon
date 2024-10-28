@@ -1,0 +1,196 @@
+---
+const response = await fetch('http://localhost:8000/submissions');
+const submissions = await response.json();
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Form Submissions</title>
+	</head>
+	<body>
+		<main>
+			<div class="header">
+				<h1>Form Submissions</h1>
+				<a href="/" class="back-button">Back to Form</a>
+			</div>
+
+			<div class="table-container">
+				{submissions.length === 0 ? (
+					<div class="empty-state">
+						<p>No submissions found</p>
+					</div>
+				) : (
+					<table>
+						<thead>
+							<tr>
+								<th>Submission Date</th>
+								<th>Name</th>
+								<th>Organization</th>
+								<th>Interests</th>
+								<th>Bio</th>
+								<th>ID</th>
+							</tr>
+						</thead>
+						<tbody>
+							{submissions.map((submission) => (
+								<tr>
+									<td>{new Date(submission.submission_date).toLocaleString()}</td>
+									<td>{submission.name}</td>
+									<td>{submission.organization}</td>
+									<td>{submission.interests}</td>
+									<td class="bio-cell">{submission.bio}</td>
+									<td class="id-cell">{submission.id}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				)}
+			</div>
+		</main>
+	</body>
+</html>
+
+<style>
+	/* Samsung One UI inspired styles */
+	:root {
+		--samsung-blue: #1259B0;
+		--samsung-light-blue: #3D7DD9;
+		--samsung-gray: #4A4A4A;
+		--samsung-light-gray: #F7F7F7;
+		--samsung-border: #E1E1E1;
+		--samsung-focus: #BAD6FF;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: var(--samsung-light-gray);
+		font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+		color: var(--samsung-gray);
+	}
+
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem 1rem;
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+
+	h1 {
+		color: var(--samsung-gray);
+		font-size: 2rem;
+		font-weight: 600;
+		margin: 0;
+		letter-spacing: -0.02em;
+	}
+
+	.back-button {
+		padding: 0.75rem 1.5rem;
+		background-color: var(--samsung-blue);
+		color: white;
+		text-decoration: none;
+		border-radius: 16px;
+		font-weight: 500;
+		transition: background-color 0.2s ease;
+	}
+
+	.back-button:hover {
+		background-color: var(--samsung-light-blue);
+	}
+
+	.table-container {
+		background-color: white;
+		border-radius: 26px;
+		padding: 1.5rem;
+		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+		overflow-x: auto;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+	}
+
+	th, td {
+		padding: 1rem;
+		text-align: left;
+		border-bottom: 1px solid var(--samsung-border);
+	}
+
+	th {
+		background-color: var(--samsung-light-gray);
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: var(--samsung-gray);
+	}
+
+	th:first-child {
+		border-top-left-radius: 16px;
+	}
+
+	th:last-child {
+		border-top-right-radius: 16px;
+	}
+
+	tr:last-child td {
+		border-bottom: none;
+	}
+
+	td {
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.bio-cell {
+		max-width: 300px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.id-cell {
+		font-family: monospace;
+		font-size: 0.85rem;
+		opacity: 0.7;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 3rem;
+		color: var(--samsung-gray);
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 768px) {
+		.header {
+			flex-direction: column;
+			gap: 1rem;
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 1.75rem;
+		}
+
+		.table-container {
+			padding: 1rem;
+			border-radius: 20px;
+		}
+
+		th, td {
+			padding: 0.75rem;
+			font-size: 0.9rem;
+		}
+	}
+</style>

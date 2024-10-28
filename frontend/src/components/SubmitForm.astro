@@ -1,0 +1,208 @@
+<script>
+  const form = document.querySelector('form');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const formObject = {
+      name: formData.get('name'),
+      organization: formData.get('organization'),
+      interests: formData.get('interests'),
+      bio: formData.get('bio')
+    };
+
+    try {
+      const response = await fetch('http://localhost:8000/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formObject),
+      });
+      
+      const data = await response.json();
+      const resultDiv = document.getElementById('result');
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div class="success">
+            <p>${data.message}</p>
+            <p class="submission-id">Submission ID: ${data.submission_id}</p>
+          </div>
+        `;
+        resultDiv.style.display = 'block';
+        
+        // Reset form after successful submission
+        form.reset();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      const resultDiv = document.getElementById('result');
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div class="error">
+            <p>An error occurred while submitting the form. Please try again.</p>
+          </div>
+        `;
+        resultDiv.style.display = 'block';
+      }
+    }
+  });
+</script>
+
+<div class="form-container">
+  <form>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <div class="input-wrapper">
+        <input type="text" id="name" name="name" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="organization">Organization</label>
+      <div class="input-wrapper">
+        <input type="text" id="organization" name="organization" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="interests">Interests</label>
+      <div class="input-wrapper">
+        <input type="text" id="interests" name="interests" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <div class="input-wrapper">
+        <textarea id="bio" name="bio" rows="4" required></textarea>
+      </div>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+  <div id="result" style="display: none;"></div>
+</div>
+
+<style>
+  /* Samsung One UI inspired styles */
+  :root {
+    --samsung-blue: #1259B0;
+    --samsung-light-blue: #3D7DD9;
+    --samsung-gray: #4A4A4A;
+    --samsung-light-gray: #F7F7F7;
+    --samsung-border: #E1E1E1;
+    --samsung-focus: #BAD6FF;
+    --samsung-success: #4CAF50;
+    --samsung-error: #FF5252;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 26px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .input-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--samsung-gray);
+    font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  input, textarea {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1.5px solid var(--samsung-border);
+    border-radius: 16px;
+    background-color: var(--samsung-light-gray);
+    font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+    font-size: 1rem;
+    color: var(--samsung-gray);
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--samsung-blue);
+    background-color: white;
+    box-shadow: 0 0 0 4px var(--samsung-focus);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 16px;
+    background-color: var(--samsung-blue);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  button:hover {
+    background-color: var(--samsung-light-blue);
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  #result {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Samsung Sans', 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-sizing: border-box;
+  }
+
+  .success {
+    background-color: #E8F5E9;
+    border-left: 4px solid var(--samsung-success);
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .error {
+    background-color: #FFEBEE;
+    border-left: 4px solid var(--samsung-error);
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .submission-id {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--samsung-gray);
+    opacity: 0.8;
+  }
+</style>
